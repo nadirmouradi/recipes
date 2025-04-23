@@ -1,6 +1,6 @@
 import React , {useState , useEffect} from 'react';
-import { Link , useNav, useNavigate } from 'react-router-dom';
-import { register } from '../services/authService';
+import { Link , useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 const Register = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -9,6 +9,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
+  const {register} = useAuth;
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -48,7 +49,6 @@ const Register = () => {
           password: formData.password,
         };
         await register(transformedData);
-        Navigate("/")
         setFormData({
           firstName: '',
           lastName: '',

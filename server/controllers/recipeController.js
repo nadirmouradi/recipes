@@ -30,17 +30,21 @@ exports.getRecipeById = async (req, res) => {
 };
 
 // Créer une nouvelle recette
+// controllers/recipeController.js
 exports.createRecipe = async (req, res) => {
-  const { user_id, titre, description, image_url, preparation, ingredients } = req.body;
+  const { user_id, titre, description, preparation, ingredients } = req.body;
+  const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
     const newRecipe = await Recipe.create({ user_id, titre, description, image_url, preparation, ingredients });
-    res.status(201).json(newRecipe); // Renvoie la recette créée
+    res.status(201).json(newRecipe);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Erreur lors de la création de la recette' });
   }
 };
+
+
 
 // Supprimer une recette
 exports.deleteRecipe = async (req, res) => {

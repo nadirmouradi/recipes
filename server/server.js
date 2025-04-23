@@ -17,6 +17,10 @@ app.use('/api', authRoutes);
 app.use('/api/recipes', recipeRoutes); 
 app.use('/api/comments', commentRoutes);
 app.use('/api/favorites', favoriteRoutes);
+const path = require('path');
+// app.js
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 
 const port = process.env.PORT;

@@ -28,11 +28,11 @@ const login = async (req, res) => {
     const query = "SELECT * FROM users WHERE email = ?";
     db.execute(query, [email] , async (err , results ) => {
       if (err) {
-        return res.status(500).json({ error: "Error signing in user" });
+        return res.status(500).json({ message: "Error signing in user" });
       }
   
       if (results.length === 0) {
-        return res.status(401).json({ error: "Invalid email or mot de Passe" });
+        return res.status(401).json({ message: "email n'existe pas " });
       }
   
       const user = results[0];
@@ -42,11 +42,11 @@ const login = async (req, res) => {
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET , { expiresIn: "24h" });
         res.json({ token, user });
       } else {
-        res.status(401).json({ error: "email ou mot de passe incorrect" });
+        res.status(401).json({ message: "mot de passe incorrect" });
       }
     }); 
   }catch{
-    res.status(500).json({ error: "Error signing in user" });
+    res.status(500).json({ message: "Error signing in user" });
   }
 };
 

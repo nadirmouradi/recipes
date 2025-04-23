@@ -1,6 +1,6 @@
-import React , {useState} from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../services/authService";
+import { useAuth } from "../../context/AuthContext"; // Changement ici
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const Login = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
+  const { login } = useAuth();
   const validateForm = () => {
     const newErrors = {};
     if (!formData.email.trim()) {
@@ -31,16 +31,25 @@ const Login = () => {
   const Navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      try{
-        const response = await login(formData); 
-        localStorage.setItem("token" , response.token)
-        Navigate("/")
-      }catch(error){
-        console.error("Error registering user:", error.response?.data || error.message);
-        setErrors({ apiError: "Failed to login. Please try again later." });
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    try {
+      const { success, error } = await login(formData);
+      if (success) {
+        Navigate("/");
+      } else {
+        setErrors({
+          ...errors,
+          apiError: error || "Échec de la connexion" // Affiche l'erreur du backend
+        });
       }
+    } catch (error) {
+      setErrors({
+        ...errors,
+        apiError: error.message || "Une erreur inconnue est survenue"
+      });
+    } finally {
       setIsLoading(false);
     }
   };
@@ -49,7 +58,11 @@ const Login = () => {
       <div className="w-1/2 flex flex-col justify-center items-center bg-gray-100 p-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Connexion</h1>
         <form className="w-1/2" onSubmit={handleSubmit}>
-        {errors.apiError && <p className="text-red-500 text-sm mb-4">{errors.apiError}</p>}
+          {errors.apiError && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-center">
+              {errors.apiError}
+            </div>
+          )}
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -89,7 +102,7 @@ const Login = () => {
             disabled={isLoading}
             className="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-orange-200 transition duration-300"
           >
-              {isLoading ? "Connexion..." : "Connexion"}
+            {isLoading ? "Connexion..." : "Connexion"}
 
           </button>
 
@@ -99,13 +112,13 @@ const Login = () => {
             </a>
           </div>
           <div className="mt-4 text-center">
-          <p className="text-gray-600">
-            Vous n'avez pas de compte ?{' '}
-            <Link to="/register" className="text-primary hover:underline">
-              Inscrivez-vous ici
-            </Link>
-          </p>
-        </div>
+            <p className="text-gray-600">
+              Vous n'avez pas de compte ?{' '}
+              <Link to="/register" className="text-primary hover:underline">
+                Inscrivez-vous ici
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
 
