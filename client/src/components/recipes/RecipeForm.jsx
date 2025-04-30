@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const user_id = 2; // Valeur fixe pour user_id
+const user_id = 2; 
 
 const RecipeForm = () => {
   const [formData, setFormData] = useState({
@@ -25,15 +25,12 @@ const RecipeForm = () => {
     e.preventDefault();
     const data = new FormData();
 
-    // Ajouter le user_id constant
-    data.append('user_id', user_id); // Toujours envoyer user_id = 1
+    data.append('user_id', user_id); 
 
-    // Ajouter chaque champ du formulaire
     for (const key in formData) {
       data.append(key, formData[key]);
     }
 
-    // Ajouter le fichier image
     if (image) {
       data.append('image', image);
     }

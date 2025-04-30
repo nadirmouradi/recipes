@@ -1,8 +1,6 @@
-// controllers/commentController.js
 
 const Comment = require('../model/Comment');
 
-// Récupérer tous les commentaires d'une recette
 exports.getAllCommentsForRecipe = async (req, res) => {
   const recipeId = req.params.recipeId;
   try {
@@ -14,7 +12,6 @@ exports.getAllCommentsForRecipe = async (req, res) => {
   }
 };
 
-// Ajouter un commentaire à une recette
 exports.addComment = async (req, res) => {
   const { user_id, recipe_id, contenu } = req.body;
 
@@ -27,7 +24,6 @@ exports.addComment = async (req, res) => {
   }
 };
 
-// Supprimer un commentaire
 exports.deleteComment = async (req, res) => {
   const commentId = req.params.id;
 

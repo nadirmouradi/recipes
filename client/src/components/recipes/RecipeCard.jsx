@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 function RecipeCard({ recipe }) {
   return (
     <div className="max-w-sm rounded-lg overflow-hidden shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
-      {/* Image de la recette */}
       <img
         src={`http://localhost:8080${recipe.image_url}`}
         alt={recipe.titre}
@@ -11,17 +10,14 @@ function RecipeCard({ recipe }) {
       />
 
       <div className="p-6">
-        {/* Titre de la recette */}
         <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
           {recipe.titre}
         </h3>
 
-        {/* Nom de l'auteur */}
         <p className="text-gray-600 mb-4">
           {recipe.nom} {recipe.prenom}
         </p>
 
-        {/* Bouton Voir détails */}
         <div className="flex justify-between items-center">
           <Link
             to={`/recipe/${recipe.id}`}

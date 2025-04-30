@@ -26,27 +26,61 @@ const login = async (req, res) => {
 
   try {
     const query = "SELECT * FROM users WHERE email = ?";
-    db.execute(query, [email] , async (err , results ) => {
+    db.execute(query, [email], async (err, results) => {
       if (err) {
-        return res.status(500).json({ message: "Error signing in user" });
+        console.error("Database error:", err);
+        return res.status(500).json({ 
+          success: false,
+          message: "Erreur serveur lors de la connexion" 
+        });
       }
-  
+
       if (results.length === 0) {
-        return res.status(401).json({ message: "email n'existe pas " });
+        return res.status(401).json({ 
+          success: false,
+          message: "Email ou mot de passe incorrect" 
+        });
       }
-  
+
       const user = results[0];
       const passwordMatch = await bcrypt.compare(password, user.password);
-      if (passwordMatch) {
-  
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET , { expiresIn: "24h" });
-        res.json({ token, user });
-      } else {
-        res.status(401).json({ message: "mot de passe incorrect" });
+      
+      if (!passwordMatch) {
+        return res.status(401).json({ 
+          success: false,
+          message: "Email ou mot de passe incorrect" 
+        });
       }
-    }); 
-  }catch{
-    res.status(500).json({ message: "Error signing in user" });
+
+      const token = jwt.sign(
+        { 
+          id: user.id,
+          email: user.email 
+        }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: "24h" }
+      );
+
+      const userData = {
+        id: user.id,
+        nom: user.nom,
+        prenom: user.prenom,
+        email: user.email,
+        createdAt: user.created_at
+      };
+
+      res.json({
+        success: true,
+        token,
+        user: userData
+      });
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur lors de la connexion"
+    });
   }
 };
 

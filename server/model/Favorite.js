@@ -1,7 +1,6 @@
 const db = require('../config/database');
 
 const Favorite = {
-  // Vérifier si la recette est déjà dans les favoris
   exists: (userId, recipeId) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -9,13 +8,12 @@ const Favorite = {
         [userId, recipeId],
         (err, results) => {
           if (err) return reject(err);
-          resolve(results.length > 0); // Si une ligne est retournée, la recette est déjà dans les favoris
+          resolve(results.length > 0); 
         }
       );
     });
   },
 
-  // Ajouter une recette aux favoris
   add: (userId, recipeId) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -29,7 +27,6 @@ const Favorite = {
     });
   },
 
-  // Supprimer une recette des favoris
   remove: (favoriteId) => {
     return new Promise((resolve, reject) => {
       db.query('DELETE FROM favorites WHERE id = ?', [favoriteId], (err, result) => {
@@ -39,7 +36,6 @@ const Favorite = {
     });
   },
 
-  // Obtenir les favoris d'un utilisateur
   getByUserId: (userId) => {
     return new Promise((resolve, reject) => {
       db.query(

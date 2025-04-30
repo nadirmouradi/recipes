@@ -1,9 +1,7 @@
-// models/Comment.js
 
 const db = require('../config/database');
 
 const Comment = {
-  // Récupérer tous les commentaires pour une recette spécifique
   getAllForRecipe: (recipeId) => {
     return new Promise((resolve, reject) => {
       db.query(
@@ -21,7 +19,6 @@ const Comment = {
     });
   },
 
-  // Ajouter un commentaire à une recette
   create: (data) => {
     const { user_id, recipe_id, contenu } = data;
     return new Promise((resolve, reject) => {
@@ -37,7 +34,6 @@ const Comment = {
     });
   },
 
-  // Supprimer un commentaire
   delete: (id) => {
     return new Promise((resolve, reject) => {
       db.query(`DELETE FROM comments WHERE id = ?`, [id], (err, result) => {

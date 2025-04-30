@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Changement ici
+import { useAuth } from "../../context/AuthContext"; 
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -41,7 +41,7 @@ const Login = () => {
       } else {
         setErrors({
           ...errors,
-          apiError: error || "Échec de la connexion" // Affiche l'erreur du backend
+          apiError: error || "Échec de la connexion" 
         });
       }
     } catch (error) {

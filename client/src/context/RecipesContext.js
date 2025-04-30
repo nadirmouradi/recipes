@@ -3,16 +3,16 @@ import { getAllRecipes, createRecipe, getRecipeById, deleteRecipe } from '../api
 
 const RecipesContext = createContext();
 
-export const RecipesProvider = ({Children}) => {
+export const RecipesProvider = ({children}) => {
     const [recipes , setRecipes] = useState([]) ;
     const [loading , setLoading] = useState(true) ;
     const [error , setError] = useState(null) ;
-    const [currentRecipe , setCurrentRecipe] = useState() ;
+    const [currentRecipe , setCurrentRecipe] = useState(null) ;
 
     const getRecipes = async () => {
         try{
             const data = await getAllRecipes();
-            setRecipes = data
+            setRecipes(data)
             setError(null)
         }catch(err){
             setError(err.message)

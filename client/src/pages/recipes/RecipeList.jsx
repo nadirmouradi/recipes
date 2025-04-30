@@ -1,26 +1,26 @@
 import { useEffect, useState } from 'react';
 import RecipeCard from '../../components/recipes/RecipeCard';
-import { getAllRecipes } from '../../api/recipes';
+import { useRecipes } from '../../context/RecipesContext';
 
-function RecipeList() {
-  const [recipes, setRecipes] = useState([]);
+const RecipeList = ({searchQuery}) => {
 
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      try {
-        const data = await getAllRecipes();
-        setRecipes(data);
-      } catch (error) {
-        console.error('Erreur :', error);
-      } 
-    };
-    fetchRecipes();
-  }, []);
-
+  
+  const { recipes, loading, error } = useRecipes();
+  if (loading) {
+    return <div>Chargement en cours...</div>;
+  }
+  
+  if (error) {
+    return <div>Erreur: {error}</div>;
+  }
+  console.log(recipes)
+  const filteredRecipes = recipes.filter(recipe =>
+    recipe.titre.toLowerCase().startsWith(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
-      {recipes.map(recipe => (
+      {filteredRecipes.map(recipe => (
         <RecipeCard key={recipe.id} recipe={recipe} />
       ))}
     </div>

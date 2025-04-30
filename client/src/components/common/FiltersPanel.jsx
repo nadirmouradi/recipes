@@ -1,4 +1,3 @@
-// src/components/Filters/FiltersPanel.jsx
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const filterGroups = [

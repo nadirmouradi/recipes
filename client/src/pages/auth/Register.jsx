@@ -1,4 +1,4 @@
-import React , {useState , useEffect} from 'react';
+import React , {useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 const Register = () => {
@@ -9,7 +9,7 @@ const Register = () => {
     password: '',
     confirmPassword: '',
   });
-  const {register} = useAuth;
+  const { register } = useAuth(); // Ajoutez les parenthèses
   const [errors, setErrors] = useState({});
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });

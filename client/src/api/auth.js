@@ -20,7 +20,6 @@ export const login = async (userData) => {
       user: response.data.user,
     };
   } catch (error) {
-    // Structure d'erreur standardisée
     throw {
       message: error.response?.data?.message || "Email ou mot de passe incorrect",
       status: error.response?.status || 401
