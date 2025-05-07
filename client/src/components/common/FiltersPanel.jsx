@@ -1,37 +1,40 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
+import { useState } from 'react';
+
 const filterGroups = [
   {
     name: 'Type',
     filters: [
-      { id: 'vegetarian', label: 'Végétarien' },
-      { id: 'vegan', label: 'Végan' },
-      { id: 'meat', label: 'Viande' }
+      { id: 'boisson', label: 'boisson' },
+      { id: 'sucrée', label: 'sucrée' },
+      { id: 'salée', label: 'salée' }
     ]
   },
   {
     name: 'Temps',
     filters: [
-      { id: 'quick', label: '< 30 min' },
-      { id: 'medium', label: '30-60 min' },
-      { id: 'long', label: '> 60 min' }
+      { id: '< 30 min', label: '< 30 min' },
+      { id: '30-60 min', label: '30-60 min' },
+      { id: '> 60 min', label: '> 60 min' }
     ]
   },
   {
     name: 'Difficulté',
     filters: [
-      { id: 'easy', label: 'Facile' },
-      { id: 'medium', label: 'Moyen' },
-      { id: 'hard', label: 'Difficile' }
+      { id: 'facile', label: 'Facile' },
+      { id: 'moyen', label: 'Moyen' },
+      { id: 'difficile', label: 'Difficile' }
     ]
   }
 ];
 
-const FiltersPanel = ({ activeFilters, onFilterChange }) => {
+const FiltersPanel = ({activeFilters , setActiveFilters}) => {
+
   const toggleFilter = (filterId) => {
-    onFilterChange(prev =>
+    setActiveFilters((prev) =>
       prev.includes(filterId)
-        ? prev.filter(id => id !== filterId)
+        ? prev.filter((id) => id !== filterId)
         : [...prev, filterId]
     );
   };
@@ -61,41 +64,9 @@ const FiltersPanel = ({ activeFilters, onFilterChange }) => {
             </div>
           ))}
         </div>
-
-        {activeFilters.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Filtres actifs:</span>
-              {activeFilters.map((filterId) => {
-                const filter = filterGroups
-                  .flatMap(g => g.filters)
-                  .find(f => f.id === filterId);
-                return (
-                  <span 
-                    key={filterId}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
-                  >
-                    {filter?.label}
-                    <button 
-                      onClick={() => toggleFilter(filterId)}
-                      className="ml-1.5 inline-flex text-blue-400 hover:text-blue-600"
-                    >
-                      <XMarkIcon className="h-3 w-3" />
-                    </button>
-                  </span>
-                );
-              })}
-              <button 
-                onClick={() => onFilterChange([])}
-                className="ml-2 text-sm text-blue-600 hover:text-blue-800"
-              >
-                Tout effacer
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
-}
-export default FiltersPanel
+};
+
+export default FiltersPanel;

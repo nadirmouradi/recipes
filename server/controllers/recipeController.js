@@ -29,11 +29,11 @@ exports.getRecipeById = async (req, res) => {
 
 
 exports.createRecipe = async (req, res) => {
-  const { user_id, titre, description, preparation, ingredients } = req.body;
+  const { user_id, titre, description, preparation, ingredients,temps_preparation,type,difficulte } = req.body;
   const image_url = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
-    const newRecipe = await Recipe.create({ user_id, titre, description, image_url, preparation, ingredients });
+    const newRecipe = await Recipe.create({ user_id, titre, description, image_url, preparation, ingredients,temps_preparation,type,difficulte });
     res.status(201).json(newRecipe);
   } catch (err) {
     console.error(err);

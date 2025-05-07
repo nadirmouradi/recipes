@@ -20,7 +20,10 @@ export const getRecipeById = async(id) => {
 }
 export const createRecipe = async(recipeData) => {
     try{
-        const response = await axios.post(`${APIURL}`, recipeData)
+        const response = await axios.post(`${APIURL}`, recipeData , {
+            headers: { 'Content-Type': 'multipart/form-data' }
+        })
+
         return response.data
     } catch(err) {
         throw err.response?.data?.message || 'Erreur lors de la création de recette';

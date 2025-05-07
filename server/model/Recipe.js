@@ -1,59 +1,83 @@
-const db = require('../config/database')
+const db = require('../config/database');
 
 const Recipe = {
-  getAll: () => {
-    return new Promise((resolve, reject) => {
-      db.query(
+  // Récupère toutes les recettes avec les infos utilisateur
+  getAll: async () => {
+    try {
+      const [results] = await db.query(
         `SELECT recipes.*, users.nom, users.prenom 
          FROM recipes 
          JOIN users ON recipes.user_id = users.id 
-         ORDER BY recipes.created_at DESC`,
-        (err, results) => {
-          if (err) return reject(err); 
-          resolve(results); 
-        }
+         ORDER BY recipes.created_at DESC`
       );
-    });
+      return results;
+    } catch (err) {
+      throw err;
+    }
   },
 
-  getById: (id) => {
-    return new Promise((resolve, reject) => {
-      db.query(
+  getById: async (id) => {
+    try {
+      const [results] = await db.query(
         `SELECT recipes.*, users.nom, users.prenom 
          FROM recipes 
          JOIN users ON recipes.user_id = users.id 
          WHERE recipes.id = ?`,
-        [id], 
-        (err, results) => {
-          if (err) return reject(err);
-          resolve(results[0]); 
-        }
+        [id]
       );
-    });
+      return results[0];
+    } catch (err) {
+      throw err;
+    }
   },
 
-  create: (data) => {
-    const { user_id, titre, description, image_url, preparation, ingredients } = data;
-    return new Promise((resolve, reject) => {
-      db.query(
-        `INSERT INTO recipes (user_id, titre, description, image_url, preparation, ingredients)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [user_id, titre, description, image_url, preparation, ingredients],
-        (err, result) => {
-          if (err) return reject(err);
-          resolve({ id: result.insertId, ...data }); 
-        }
+  // Crée une nouvelle recette
+  create: async (data) => {
+    const { 
+      user_id, 
+      titre, 
+      description, 
+      image_url, 
+      preparation, 
+      ingredients,
+      temps_preparation,
+      type,
+      difficulte
+    } = data;
+    
+    try {
+      const [result] = await db.query(
+        `INSERT INTO recipes 
+          (user_id, titre, description, image_url, preparation, ingredients, temps_preparation, type, difficulte)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          user_id, 
+          titre, 
+          description, 
+          image_url, 
+          preparation, 
+          ingredients,
+          temps_preparation,
+          type,
+          difficulte
+        ]
       );
-    });
+      return { id: result.insertId, ...data };
+    } catch (err) {
+      throw err;
+    }
   },
 
-  delete: (id) => {
-    return new Promise((resolve, reject) => {
-      db.query(`DELETE FROM recipes WHERE id = ?`, [id], (err, result) => {
-        if (err) return reject(err);
-        resolve(result);
-      });
-    });
+  delete: async (id) => {
+    try {
+      const [result] = await db.query(
+        `DELETE FROM recipes WHERE id = ?`, 
+        [id]
+      );
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 };
 

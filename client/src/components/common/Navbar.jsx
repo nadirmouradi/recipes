@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import FiltersPanel from './FiltersPanel';
 
-const Navbar = ({ searchQuery, setSearchQuery }) => {
-  const [activeFilters, setActiveFilters] = useState([]);
+const Navbar = ({ searchQuery, setSearchQuery , activeFilters , setActiveFilters }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const user = {
@@ -104,7 +103,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
 
       <FiltersPanel 
         activeFilters={activeFilters}
-        onFilterChange={setActiveFilters}
+        setActiveFilters={setActiveFilters}
       />
     </>
   );

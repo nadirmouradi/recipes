@@ -4,12 +4,14 @@ import RecipeList from '../recipes/RecipeList'
 
 const RecipesList = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilters, setActiveFilters] = useState([]);
+
 
   
   return (
     <div>
-      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <RecipeList searchQuery={searchQuery} />
+      <Navbar searchQuery={searchQuery} setSearchQuery={setSearchQuery} activeFilters={activeFilters} setActiveFilters={setActiveFilters} />
+      <RecipeList searchQuery={searchQuery} activeFilters={activeFilters} />
     </div>
   )
 }

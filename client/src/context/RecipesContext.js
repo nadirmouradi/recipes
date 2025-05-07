@@ -36,7 +36,7 @@ export const RecipesProvider = ({children}) => {
         try{
             const newRec = await createRecipe(data);
             setRecipes([...recipes , newRec]);
-            return newRecipe;
+            return newRec;
         }catch (err) {
           setError(err.message);
           throw err;
