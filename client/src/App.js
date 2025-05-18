@@ -9,25 +9,23 @@ import RecipeList from './pages/recipes/RecipeList';
 import RecipeDetailPage from './pages/recipes/RecipeDetailPage';
 import { RecipesProvider } from './context/RecipesContext';
 import { AuthProvider } from './context/AuthContext';
-import Profile from './pages/user/Profile';
-
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   return (
     <AuthProvider>
-    <RecipesProvider> 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/create-recipe" element={<CreateRecipePage />} />
-          <Route path="/recipes" element={<RecipeList />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/recipe/:id" element={<RecipeDetailPage />} />
-          <Route path="/profile" element={<Profile />} />          
-        </Routes>
-      </BrowserRouter>
-    </RecipesProvider>
+      <RecipesProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/create-recipe" element={<ProtectedRoute><CreateRecipePage /></ProtectedRoute>} />
+            <Route path="/recipes" element={<ProtectedRoute><RecipeList /></ProtectedRoute>} />
+            <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/recipe/:id" element={<ProtectedRoute><RecipeDetailPage /></ProtectedRoute>} />
+          </Routes>
+        </BrowserRouter>
+      </RecipesProvider>
     </AuthProvider>
   );
 };

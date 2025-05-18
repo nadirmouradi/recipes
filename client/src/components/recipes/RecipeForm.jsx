@@ -38,14 +38,15 @@ const RecipeForm = () => {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; // Récupère le 1er fichier sélectionné
     if (file) {
-      setImage(file);
-      const reader = new FileReader();
+      setImage(file); // Sauvegarde le fichier dans le state
+  
+      const reader = new FileReader(); // Crée un lecteur de fichier
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        setImagePreview(reader.result); // Met à jour la prévisualisation
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Convertit le fichier en URL base64
     }
   };
 
@@ -57,13 +58,14 @@ const RecipeForm = () => {
     const data = new FormData();
     data.append('user_id', user.id);
 
-    Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value);
-    });
-
-    if (image) {
-      data.append('image', image);
-    }
+    data.append('user_id', user.id); // Ajoute l'ID utilisateur
+  Object.entries(formData).forEach(([key, value]) => {
+    data.append(key, value); // Ajoute tous les champs du formulaire
+  });
+  
+  if (image) {
+    data.append('image', image); // Ajoute le fichier image sous la clé 'image'
+  }
 
     try {
       await newRecipe(data) ;
